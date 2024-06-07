@@ -163,7 +163,6 @@ window.addEventListener('load', () => {
     var i = 0;
     function bootSequence() {
         waitingSequenceEnabled = false;
-        console.log("i: " + i);
 
         if (i < txt.length) {
             range = Math.floor(Math.random() * 4) + 1;
@@ -182,7 +181,16 @@ window.addEventListener('load', () => {
         {
             i = 0;
             // enable scrollbar
-            document.body.style.overflow = 'auto';
+            document.body.style.overflowX = 'hidden';
+            document.body.style.overflowY = 'scroll';
+            setTimeout(function() {
+                document.getElementById("loader-text").insertAdjacentHTML("afterend", "<span id='lend'>Loading GUI</span>");
+                for(let jk = 500; jk < 3000; jk += 500) setTimeout(function() {document.getElementById("lend").insertAdjacentHTML("afterend", ".");} , jk);
+                setTimeout(function() {
+                    loadCV();
+                } , 3000);
+            }, 1000);
+
         }
         // scroll to end of page
         window.scrollBy(0,100);
@@ -193,19 +201,21 @@ window.addEventListener('load', () => {
             document.getElementById("cursor").insertAdjacentHTML("beforeBegin", text[i]);
             i++;
             setTimeout(type, Math.floor(Math.random() * 200) + 100, text);
+        } else {
+            i = 0;
         }
     }
 
     var k = 0;
     function deleteType(text) {
         if(k < text.length) {
-            document.getElementById("cursor").removeChild(document.getElementById("cursor").childNodes[document.getElementById("cursor").children.length - 2]);
+            document.getElementById("start-text").removeChild(document.getElementById("start-text").childNodes[16 + text.length - k - 1]);
             k++;
             setTimeout(deleteType, Math.floor(Math.random() * 200) + 100, text);
         }
     }
 
-    var startSequenceText = "start virus.exe"
+    var startSequenceText = "sudo ./virus.sh"
     var ti = 0;
     function typeWriter(txt) {
         if (ti < txt.length) {
@@ -256,17 +266,15 @@ window.addEventListener('load', () => {
 
         if (timer == 2000) {
             type("jk, lol :)")
-            setTimeout(deleteType, 2000, "jk, lol :)");
+            setTimeout(deleteType, 4000, "jk, lol :)");
+            setTimeout(type, 6000, "sudo boot");
             setTimeout(function() {
                 cursorEnabled = false;
                 document.getElementById("cursor").insertAdjacentHTML("beforeBegin","<br />");
-                document.getElementById("cursor").insertAdjacentHTML("beforeBegin", "Actually booting now");
-                setTimeout(function() {document.getElementById("cursor").insertAdjacentHTML("beforeBegin", ".");} , 500);
-                setTimeout(function() {document.getElementById("cursor").insertAdjacentHTML("beforeBegin", ".");} , 1000);
-                setTimeout(function() {document.getElementById("cursor").insertAdjacentHTML("beforeBegin", ".");} , 1500);
-                setTimeout(function() {document.getElementById("cursor").insertAdjacentHTML("beforeBegin", ".");} , 2000);
-            }, 6000);
-            setTimeout(bootSequence, 10000);
+                // document.getElementById("cursor").insertAdjacentHTML("beforeBegin", "Booting");
+                for(let jk = 500; jk < 3000; jk += 500) setTimeout(function() {document.getElementById("cursor").insertAdjacentHTML("beforeBegin", ".");} , jk);
+            }, 8000);
+            setTimeout(bootSequence, 12000);
         }
     }
 
@@ -286,6 +294,11 @@ window.addEventListener('load', () => {
 
     // Call the boot animation function
     bootAnimation();
+
+    function loadCV() {
+        document.getElementById("loader").remove();
+        document.getElementsByClassName('wrapper')[0].style.display = 'block';
+    }
 
     // setTimeout(() => {
         // Remove the loader after boot animation
